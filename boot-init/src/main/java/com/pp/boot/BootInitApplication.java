@@ -1,6 +1,7 @@
 package com.pp.boot;
 
 import io.undertow.UndertowOptions;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
  * 启动类
  * 使用Undertow作为服务器
  */
+@MapperScan("com.pp.boot.mapper")
 @SpringBootApplication
 public class BootInitApplication extends SpringBootServletInitializer {
 

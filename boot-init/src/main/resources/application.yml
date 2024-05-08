@@ -41,7 +41,10 @@ spring:
 
 # 下面这些内容是为了让 MyBatis 映射
 mybatis:
-  mapper-locations: classpath:mappers/*xml
+  # 主键自增策略：uuid
+  configuration:
+    default-id-type: uuid
+  mapper-locations: classpath:mapper/*xml
   type-aliases-package: com.pp.boot.domain.entity
 
 # 应用服务 WEB 访问端口
@@ -50,3 +53,6 @@ server:
   undertow:
     io-threads: 200
     worker-threads: 800
+
+panpan:
+  name: panpan

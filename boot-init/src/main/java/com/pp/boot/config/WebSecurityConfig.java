@@ -14,22 +14,22 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                // 允许访问的路径
+//        http.authorizeRequests()
+//                // 允许访问的路径
 //                .antMatchers("/", "/index").permitAll()
-                // 其他请求全部需要验证权限
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                // 登录页面
-                .loginPage("/login.html")
-                // 登录处理请求
-                .loginProcessingUrl("/doLogin")
-                .defaultSuccessUrl("/index")
-                .failureUrl("/login.html")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .permitAll();
+//                // 其他请求全部需要验证权限
+//                .anyRequest().authenticated();
+//                .and()
+//                .formLogin()
+//                // 登录页面
+//                .loginPage("/login.html")
+//                // 登录处理请求
+//                .loginProcessingUrl("/doLogin")
+//                .defaultSuccessUrl("/index")
+//                .failureUrl("/login.html")
+//                .usernameParameter("username")
+//                .passwordParameter("password")
+//                .permitAll();
         // 关闭跨站请求伪造
         http.csrf().disable();
     }
