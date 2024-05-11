@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.adwm.admin.repository.mapper.mssp.SdkInstalledBundleMapper">
+    <resultMap id="BaseResultMap" type="com.adwm.admin.domain.SdkInstalledBundle">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="ios_bundle" property="iosBundle" jdbcType="VARCHAR"/>
+        <result column="android_bundle" property="androidBundle" jdbcType="VARCHAR"/>
+        <result column="bundle_name" property="bundleName" jdbcType="VARCHAR"/>
+        <result column="create_user" property="createUser" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="INTEGER"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="flag" property="flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, ios_bundle, android_bundle, bundle_name, create_user, create_time, update_user,
+        update_time, flag
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sdk_installed_bundle
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectBundleNameByMediaId" resultType="string">
+        select
+        s.bundle_name
+        from t_media_installed_app_mapping m
+        left join t_sdk_installed_bundle s on m.wm_installed_bundle_id = s.id
+        where m.flag = 0 and m.media_id = #{mediaId} and m.os = #{os}
+        and s.flag = 0
+        GROUP BY s.bundle_name
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        id, ios_bundle, android_bundle, bundle_name
+        from t_sdk_installed_bundle
+        where flag = 0
+    </select>
+
+    <!-- 查询所有 android_bundle，保证id>134 -->
+    <select id="getAllAndroidBundles" resultType="java.lang.String">
+        SELECT android_bundle FROM t_sdk_installed_bundle WHERE id > 134 AND flag = 1
+    </select>
+    <!-- 批量插入数据 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO t_sdk_installed_bundle (android_bundle, bundle_name)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.androidBundle}, #{item.bundleName})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_sdk_installed_bundle
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.adwm.admin.domain.SdkInstalledBundle">
+        insert into t_sdk_installed_bundle (id, ios_bundle, android_bundle,
+          bundle_name, create_user, create_time,
+          update_user, update_time, flag
+          )
+        values (#{id,jdbcType=INTEGER}, #{iosBundle,jdbcType=VARCHAR}, #{androidBundle,jdbcType=VARCHAR},
+          #{bundleName,jdbcType=VARCHAR}, #{createUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+          #{updateUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{flag,jdbcType=INTEGER}
+          )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.adwm.admin.domain.SdkInstalledBundle">
+        insert into t_sdk_installed_bundle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="iosBundle != null">
+                ios_bundle,
+            </if>
+            <if test="androidBundle != null">
+                android_bundle,
+            </if>
+            <if test="bundleName != null">
+                bundle_name,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="iosBundle != null">
+                #{iosBundle,jdbcType=VARCHAR},
+            </if>
+            <if test="androidBundle != null">
+                #{androidBundle,jdbcType=VARCHAR},
+            </if>
+            <if test="bundleName != null">
+                #{bundleName,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flag != null">
+                #{flag,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.adwm.admin.domain.SdkInstalledBundle">
+        update t_sdk_installed_bundle
+        <set>
+            <if test="iosBundle != null">
+                ios_bundle = #{iosBundle,jdbcType=VARCHAR},
+            </if>
+            <if test="androidBundle != null">
+                android_bundle = #{androidBundle,jdbcType=VARCHAR},
+            </if>
+            <if test="bundleName != null">
+                bundle_name = #{bundleName,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flag != null">
+                flag = #{flag,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.adwm.admin.domain.SdkInstalledBundle">
+        update t_sdk_installed_bundle
+        set ios_bundle = #{iosBundle,jdbcType=VARCHAR},
+          android_bundle = #{androidBundle,jdbcType=VARCHAR},
+          bundle_name = #{bundleName,jdbcType=VARCHAR},
+          create_user = #{createUser,jdbcType=INTEGER},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          update_user = #{updateUser,jdbcType=INTEGER},
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+          flag = #{flag,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateFlagForAndroidBundle">
+        UPDATE t_sdk_installed_bundle
+        SET flag = #{flag}
+        WHERE android_bundle = #{androidBundle}
+        AND id > 134
+    </update>
+</mapper>
