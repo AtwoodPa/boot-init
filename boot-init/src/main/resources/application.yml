@@ -53,6 +53,30 @@ server:
   undertow:
     io-threads: 200
     worker-threads: 800
+  servlet:
+    # 应用的访问路径
+    context-path: /api
 
 panpan:
   name: panpan
+
+
+knife4j:
+  enable: true
+  openapi:
+    title: 后台接口文档
+    description: "`我是测试`,**你知道吗**
+    # aaa"
+    email: supanpan199919@163.com
+    concat: panpan
+    url: #
+    version: v4.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      test1:
+        group-name: Default-Module
+        api-rule: package
+        api-rule-resources:
+          - com.pp.boot.controller

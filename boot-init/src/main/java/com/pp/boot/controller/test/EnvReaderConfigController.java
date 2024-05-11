@@ -1,4 +1,4 @@
-package com.pp.boot.controller;
+package com.pp.boot.controller.test;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

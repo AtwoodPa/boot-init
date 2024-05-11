@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pp.boot.mapper.TStudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.pp.boot.domain.TStudentEntity">
+        <!--@Table t_student-->
+        <result property="studentId" column="student_id" jdbcType="INTEGER"/>
+        <result property="studentName" column="student_name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="gender" column="gender" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="dateOfBirth" column="date_of_birth" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        student_id
+        ,
+student_name,
+age,
+gender,
+address,
+email,
+phone,
+date_of_birth
+
+    </sql>
+
+    <!--查询单个-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_student
+        where student_id = #{studentId}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select student_id,
+               student_name,
+               age,
+               gender,
+               address,
+               email,
+               phone,
+               date_of_birth
+
+
+        from boot-init.t_student
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from t_student
+        <where>
+            <if test="studentId != null">
+                and student_id = #{studentId}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                and student_name = #{studentName}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="dateOfBirth != null">
+                and date_of_birth = #{dateOfBirth}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="studentId" useGeneratedKeys="true">
+        insert into t_student(student_name, age, gender, address, email, phone, date_of_birth)
+        values (#{studentName}, #{age}, #{gender}, #{address}, #{email}, #{phone}, #{dateOfBirth})
+    </insert>
+
+
+    <insert id="insertSelective" keyProperty="studentId" useGeneratedKeys="true">
+        insert into t_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">
+                student_name,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="address != null and address != ''">
+                address,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            <if test="phone != null and phone != ''">
+                phone,
+            </if>
+            <if test="dateOfBirth != null">
+                date_of_birth,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="studentName != null and studentName != ''">
+                #{studentName},
+            </if>
+            <if test="age != null">
+                #{age},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="address != null and address != ''">
+                #{address},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                #{phone},
+            </if>
+            <if test="dateOfBirth != null">
+                #{dateOfBirth},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="studentId" useGeneratedKeys="true">
+        insert into t_student(student_name, age, gender, address, email, phone, date_of_birth)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.studentName}, #{entity.age}, #{entity.gender}, #{entity.address}, #{entity.email},
+            #{entity.phone}, #{entity.dateOfBirth})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="studentId" useGeneratedKeys="true">
+        insert into t_student(student_name, age, gender, address, email, phone, date_of_birth)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.studentName}, #{entity.age}, #{entity.gender}, #{entity.address}, #{entity.email},
+            #{entity.phone}, #{entity.dateOfBirth})
+        </foreach>
+        on duplicate key update
+        student_name = values(student_name),
+        age = values(age),
+        gender = values(gender),
+        address = values(address),
+        email = values(email),
+        phone = values(phone),
+        date_of_birth = values(date_of_birth)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t_student
+        <set>
+            <if test="studentName != null and studentName != ''">
+                student_name = #{studentName},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="dateOfBirth != null">
+                date_of_birth = #{dateOfBirth},
+            </if>
+        </set>
+        where student_id = #{studentId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from t_student
+        where student_id = #{studentId}
+    </delete>
+
+</mapper>
+

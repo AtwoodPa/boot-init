@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+        <knif4j.version>4.4.0</knif4j.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Starter Web，排除 Tomcat 依赖 -->
@@ -65,7 +66,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-
+        <!--   knife4j - 接口文档     -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <version>${knif4j.version}</version>
+        </dependency>
         <!-- Druid 数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>

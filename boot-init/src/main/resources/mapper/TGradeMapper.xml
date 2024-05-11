@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.TGradeMapper">
+
+    <resultMap id="BaseResultMap" type="com.pp.boot.domain.TGradeEntity">
+        <!--@Table t_grade-->
+        <result property="gradeId" column="grade_id" jdbcType="INTEGER"/>
+        <result property="studentId" column="student_id" jdbcType="INTEGER"/>
+        <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+        <result property="score" column="score" jdbcType="VARCHAR"/>
+        <result property="gradeDate" column="grade_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        grade_id
+        ,
+student_id,
+course_id,
+score,
+grade_date
+
+    </sql>
+
+    <!--查询单个-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_grade
+        where grade_id = #{gradeId}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select grade_id,
+               student_id,
+               course_id,
+               score,
+               grade_date
+
+
+        from boot-init.t_grade
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from t_grade
+        <where>
+            <if test="gradeId != null">
+                and grade_id = #{gradeId}
+            </if>
+            <if test="studentId != null">
+                and student_id = #{studentId}
+            </if>
+            <if test="courseId != null">
+                and course_id = #{courseId}
+            </if>
+            <if test="score != null">
+                and score = #{score}
+            </if>
+            <if test="gradeDate != null">
+                and grade_date = #{gradeDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into t_grade(student_id, course_id, score, grade_date)
+        values (#{studentId}, #{courseId}, #{score}, #{gradeDate})
+    </insert>
+
+
+    <insert id="insertSelective" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into t_grade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="studentId != null">
+                student_id,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="gradeDate != null">
+                grade_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="studentId != null">
+                #{studentId},
+            </if>
+            <if test="courseId != null">
+                #{courseId},
+            </if>
+            <if test="score != null">
+                #{score},
+            </if>
+            <if test="gradeDate != null">
+                #{gradeDate},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into t_grade(student_id, course_id, score, grade_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.studentId}, #{entity.courseId}, #{entity.score}, #{entity.gradeDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="gradeId" useGeneratedKeys="true">
+        insert into t_grade(student_id, course_id, score, grade_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.studentId}, #{entity.courseId}, #{entity.score}, #{entity.gradeDate})
+        </foreach>
+        on duplicate key update
+        student_id = values(student_id),
+        course_id = values(course_id),
+        score = values(score),
+        grade_date = values(grade_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t_grade
+        <set>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="courseId != null">
+                course_id = #{courseId},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="gradeDate != null">
+                grade_date = #{gradeDate},
+            </if>
+        </set>
+        where grade_id = #{gradeId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from t_grade
+        where grade_id = #{gradeId}
+    </delete>
+
+</mapper>
+

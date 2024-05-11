@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pp.boot.mapper.TCourseMapper">
+
+    <resultMap id="BaseResultMap" type="com.pp.boot.domain.TCourseEntity">
+        <!--@Table t_course-->
+        <result property="courseId" column="course_id" jdbcType="INTEGER"/>
+        <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="teacher" column="teacher" jdbcType="VARCHAR"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        course_id
+        ,
+course_name,
+description,
+teacher,
+start_date,
+end_date
+
+    </sql>
+
+    <!--查询单个-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_course
+        where course_id = #{courseId}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select course_id,
+               course_name,
+               description,
+               teacher,
+               start_date,
+               end_date
+
+
+        from boot-init.t_course
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from t_course
+        <where>
+            <if test="courseId != null">
+                and course_id = #{courseId}
+            </if>
+            <if test="courseName != null and courseName != ''">
+                and course_name = #{courseName}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="teacher != null and teacher != ''">
+                and teacher = #{teacher}
+            </if>
+            <if test="startDate != null">
+                and start_date = #{startDate}
+            </if>
+            <if test="endDate != null">
+                and end_date = #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="courseId" useGeneratedKeys="true">
+        insert into t_course(course_name, description, teacher, start_date, end_date)
+        values (#{courseName}, #{description}, #{teacher}, #{startDate}, #{endDate})
+    </insert>
+
+
+    <insert id="insertSelective" keyProperty="courseId" useGeneratedKeys="true">
+        insert into t_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">
+                course_name,
+            </if>
+            <if test="description != null and description != ''">
+                description,
+            </if>
+            <if test="teacher != null and teacher != ''">
+                teacher,
+            </if>
+            <if test="startDate != null">
+                start_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">
+                #{courseName},
+            </if>
+            <if test="description != null and description != ''">
+                #{description},
+            </if>
+            <if test="teacher != null and teacher != ''">
+                #{teacher},
+            </if>
+            <if test="startDate != null">
+                #{startDate},
+            </if>
+            <if test="endDate != null">
+                #{endDate},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="courseId" useGeneratedKeys="true">
+        insert into t_course(course_name, description, teacher, start_date, end_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.courseName}, #{entity.description}, #{entity.teacher}, #{entity.startDate}, #{entity.endDate})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="courseId" useGeneratedKeys="true">
+        insert into t_course(course_name, description, teacher, start_date, end_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.courseName}, #{entity.description}, #{entity.teacher}, #{entity.startDate}, #{entity.endDate})
+        </foreach>
+        on duplicate key update
+        course_name = values(course_name),
+        description = values(description),
+        teacher = values(teacher),
+        start_date = values(start_date),
+        end_date = values(end_date)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update t_course
+        <set>
+            <if test="courseName != null and courseName != ''">
+                course_name = #{courseName},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="teacher != null and teacher != ''">
+                teacher = #{teacher},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate},
+            </if>
+        </set>
+        where course_id = #{courseId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from t_course
+        where course_id = #{courseId}
+    </delete>
+
+</mapper>
+

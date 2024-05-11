@@ -1,137 +1,222 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pp.boot.mapper.TestDataMapper">
-  <resultMap id="BaseResultMap" type="com.pp.boot.domain.TestData">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="age" jdbcType="INTEGER" property="age" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="birthday" jdbcType="DATE" property="birthday" />
-    <result column="height" jdbcType="DECIMAL" property="height" />
-    <result column="weight" jdbcType="DECIMAL" property="weight" />
-    <result column="active" jdbcType="BOOLEAN" property="active" />
-    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, `name`, age, email, birthday, height, weight, active, created_at
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from test_data
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="findAll" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from test_data
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from test_data
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.pp.boot.domain.TestData" useGeneratedKeys="true">
-    insert into test_data (`name`, age, email, 
-      birthday, height, weight, 
-      active, created_at)
-    values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
-      #{birthday,jdbcType=DATE}, #{height,jdbcType=DECIMAL}, #{weight,jdbcType=DECIMAL}, 
-      #{active,jdbcType=BOOLEAN}, #{createdAt,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.pp.boot.domain.TestData" useGeneratedKeys="true">
-    insert into test_data
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="age != null">
-        age,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="birthday != null">
-        birthday,
-      </if>
-      <if test="height != null">
-        height,
-      </if>
-      <if test="weight != null">
-        weight,
-      </if>
-      <if test="active != null">
-        active,
-      </if>
-      <if test="createdAt != null">
-        created_at,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null">
-        #{age,jdbcType=INTEGER},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="birthday != null">
-        #{birthday,jdbcType=DATE},
-      </if>
-      <if test="height != null">
-        #{height,jdbcType=DECIMAL},
-      </if>
-      <if test="weight != null">
-        #{weight,jdbcType=DECIMAL},
-      </if>
-      <if test="active != null">
-        #{active,jdbcType=BOOLEAN},
-      </if>
-      <if test="createdAt != null">
-        #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pp.boot.domain.TestData">
-    update test_data
-    <set>
-      <if test="name != null">
-        `name` = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="age != null">
-        age = #{age,jdbcType=INTEGER},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="birthday != null">
-        birthday = #{birthday,jdbcType=DATE},
-      </if>
-      <if test="height != null">
-        height = #{height,jdbcType=DECIMAL},
-      </if>
-      <if test="weight != null">
-        weight = #{weight,jdbcType=DECIMAL},
-      </if>
-      <if test="active != null">
-        active = #{active,jdbcType=BOOLEAN},
-      </if>
-      <if test="createdAt != null">
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.pp.boot.domain.TestData">
-    update test_data
-    set `name` = #{name,jdbcType=VARCHAR},
-      age = #{age,jdbcType=INTEGER},
-      email = #{email,jdbcType=VARCHAR},
-      birthday = #{birthday,jdbcType=DATE},
-      height = #{height,jdbcType=DECIMAL},
-      weight = #{weight,jdbcType=DECIMAL},
-      active = #{active,jdbcType=BOOLEAN},
-      created_at = #{createdAt,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+    <resultMap id="BaseResultMap" type="com.pp.boot.domain.TestDataEntity">
+        <!--@Table test_data-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
+        <result property="height" column="height" jdbcType="VARCHAR"/>
+        <result property="weight" column="weight" jdbcType="VARCHAR"/>
+        <result property="active" column="active" jdbcType="BOOLEAN"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,
+name,
+age,
+email,
+birthday,
+height,
+weight,
+active,
+
+created_at
+
+    </sql>
+
+    <!--查询单个-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from test_data
+        where id = #{id}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select id,
+               name,
+               age,
+               email,
+               birthday,
+               height,
+               weight,
+               active,
+
+               created_at
+
+
+        from boot-init.test_data
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from test_data
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="birthday != null">
+                and birthday = #{birthday}
+            </if>
+            <if test="height != null">
+                and height = #{height}
+            </if>
+            <if test="weight != null">
+                and weight = #{weight}
+            </if>
+            <if test="active != null">
+                and active = #{active}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into test_data(name, age, email, birthday, height, weight, active, created_at)
+        values (#{name}, #{age}, #{email}, #{birthday}, #{height}, #{weight}, #{active}, #{createdAt})
+    </insert>
+
+
+    <insert id="insertSelective" keyProperty="id" useGeneratedKeys="true">
+        insert into test_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="email != null and email != ''">
+                email,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="height != null">
+                height,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="active != null">
+                active,
+            </if>
+            <if test="createdAt != null">
+                created_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="age != null">
+                #{age},
+            </if>
+            <if test="email != null and email != ''">
+                #{email},
+            </if>
+            <if test="birthday != null">
+                #{birthday},
+            </if>
+            <if test="height != null">
+                #{height},
+            </if>
+            <if test="weight != null">
+                #{weight},
+            </if>
+            <if test="active != null">
+                #{active},
+            </if>
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into test_data(name, age, email, birthday, height, weight, active, created_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.age}, #{entity.email}, #{entity.birthday}, #{entity.height}, #{entity.weight},
+            #{entity.active}, #{entity.createdAt})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into test_data(name, age, email, birthday, height, weight, active, created_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.age}, #{entity.email}, #{entity.birthday}, #{entity.height}, #{entity.weight},
+            #{entity.active}, #{entity.createdAt})
+        </foreach>
+        on duplicate key update
+        name = values(name),
+        age = values(age),
+        email = values(email),
+        birthday = values(birthday),
+        height = values(height),
+        weight = values(weight),
+        active = values(active),
+        created_at = values(created_at)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test_data
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="height != null">
+                height = #{height},
+            </if>
+            <if test="weight != null">
+                weight = #{weight},
+            </if>
+            <if test="active != null">
+                active = #{active},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from test_data
+        where id = #{id}
+    </delete>
+
 </mapper>
+
